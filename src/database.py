@@ -29,14 +29,17 @@ def initialize_db():
     # Movies table
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS movies (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            source TEXT NOT NULL DEFAULT 'tmdb',
+            source_id INTEGER NOT NULL,
             title TEXT NOT NULL,
             overview TEXT,
             release_date TEXT,
             popularity REAL,
             vote_average REAL,
             vote_count INTEGER,
-            genre_ids TEXT
+            genre_ids TEXT,
+            UNIQUE(source, source_id)
         )
     """)
 

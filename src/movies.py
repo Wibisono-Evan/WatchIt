@@ -1,6 +1,7 @@
 import requests
 import os
 from dotenv import load_dotenv
+from src.database import get_connection
 
 # Load API key from .env file
 load_dotenv()
@@ -44,3 +45,10 @@ def get_popular_movies():
     response = requests.get(url, params=params)
     data = response.json()
     return data["results"]
+
+
+def save_movie():
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("")
