@@ -91,3 +91,26 @@ def save_movie(movie_item, source="tmdb"):
 
     finally:
         conn.close()
+
+
+def get_movie_by_id(id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("SELECT * FROM movies WHERE id = ?", (id,))
+        return cursor.fetchone()
+    finally:
+        conn.close()
+
+
+def get_movie_by_source_id(source_id, source="tmdb"):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute(
+            "SELECT * FROM movies WHERE source_id = ? AND source = ?", (source_id, source))
+        return cursor.fetchone()
+    finally:
+        conn.close()
