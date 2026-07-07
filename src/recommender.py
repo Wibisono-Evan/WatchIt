@@ -1,6 +1,13 @@
 from src.ratings import get_user_rating
 from src.database import get_connection
+from src.watch_history import get_watch_history
 from collections import Counter
+
+
+def get_seen_movie_ids(user_id):
+    rated = [row["movie_id"] for row in get_user_rating(user_id)]
+    watched = [row["movie_id"] for row in get_watch_history(user_id)]
+    return set(rated + watched)
 
 
 def content_based_filter(user_id):
@@ -33,10 +40,11 @@ def content_based_filter(user_id):
         # Find movies from databse with genres in top genres but never rated or watched
         cursor.execute("SELECT * FROM movies")
         all_movies = cursor.fetchall()
+        seen_ids = set(rated + watched)
         candidates = []
 
         for movie in all_movies:
-            if movie["id"] in watched:
+            if movie["id"] in seen_ids:
                 continue
 
             movie_genres = set(int(g)
